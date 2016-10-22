@@ -3,11 +3,24 @@ import { Component, Input } from '@angular/core';
 class Article {
   public title: string;
   public description: string;
+  public votes: number
+  public publishedAt: Date;
 
-  constructor(title: string, description:string){
+  constructor(title: string, description:string, votes: number = 0){
     this.title = title;
     this.description = description;
+    this.votes = votes || 0;
+    this.publishedAt = new Date();
   }
+
+  public voteUp(): void {
+    this.votes++;
+  }
+
+  public voteDown(): void {
+    this.votes--;
+  }
+
 
 }
 
@@ -32,10 +45,27 @@ export class SidebarComponent{}
             <h2>{{article.title}}</h2>
         </div>
         <div class="meta">
-            Voting and Votes will go here
+            <span class="ui blue small label">
+                <i class="heart icon"></i>
+                <div class="detail">
+                    {{article.votes}}
+                </div>
+            </span>
+            <span class="ui right floated">
+                <a  (click)="upvote()"
+                    class="ui small label">
+                    <i class="arrow up icon"></i>
+                    Upvote
+                </a>
+                <a  (click)="downvote()"
+                    class="ui small label">
+                    <i class="arrow down icon"></i>
+                    Downvote
+                </a>
+            </span>
         </div>
         <div class="meta date">
-            Today
+            {{ article.publishedAt | date:'medium' }}
         </div>
         <div class="meta description">
             <p>{{article.description}}</p>
@@ -54,6 +84,14 @@ export class SidebarComponent{}
 })
 export class ArticleComponent {
   @Input() article: Article;
+
+    upvote(){
+        this.article.voteUp();
+    }
+
+    downvote(){
+        this.article.voteDown();
+    }
 }
 
 @Component({
@@ -78,7 +116,7 @@ export class AppComponent {
   constructor(){
     this.articles = [ new Article(
       'The Angular 2 Screencast',
-      'Testing angular 1'
+      'Testing angular 1', 10
     ), new Article(
       'The Angular 2 Screencast',
       'Testing angular 2'
