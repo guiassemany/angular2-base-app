@@ -1,13 +1,14 @@
 export class Article {
-  public title: string;
-  public description: string;
-  public votes: number
+
   public publishedAt: Date;
 
-  constructor(title: string, description:string, votes: number = 0){
-    this.title = title;
-    this.description = description;
-    this.votes = votes;
+  constructor(
+    public title: string,
+    public description: string,
+    public imageUrl: string,
+    public votes?: number
+  ){
+    this.votes = votes || 0;
     this.publishedAt = new Date();
   }
 
